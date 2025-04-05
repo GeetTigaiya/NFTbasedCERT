@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"..\\\\..\\\\node_modules\\\\@web3modal\\\\react\\\\dist\\\\index.js -> @web3modal/ui\":{\"id\":\"..\\\\..\\\\node_modules\\\\@web3modal\\\\react\\\\dist\\\\index.js -> @web3modal/ui\",\"files\":[\"static/chunks/node_modules_web3modal_ui_dist_index_js.js\"]}}"

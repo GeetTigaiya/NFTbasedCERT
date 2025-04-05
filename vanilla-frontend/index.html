@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT Certificate System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #ebf8ff 0%, #ffffff 100%);
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #4a5568;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: #3182ce;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3182ce;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action i {
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover .card-action {
+            gap: 1rem;
+        }
+
+        .feature-card:hover .card-action i {
+            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-certificate"></i>
+                    <span>NFT Certificate System</span>
+                </div>
+                <div class="wallet-section">
+                    <button id="connectWallet" class="connect-wallet-btn">
+                        <i class="fas fa-wallet"></i>
+                        Connect Wallet
+                    </button>
+                    <div id="walletAddress" class="wallet-address hidden">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="addressText"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>NFT Certificate System</h1>
+                <p>Issue, verify, and manage blockchain-based certificates with ease. Secure, transparent, and tamper-proof.</p>
+            </div>
+        </section>
+
+        <!-- Main Features Section -->
+        <section class="features">
+            <div class="feature-grid">
+                <!-- Issue Certificate Card -->
+                <div class="feature-card" id="issueCard">
+                    <div class="card-icon">
+                        <i class="fas fa-file-certificate"></i>
+                    </div>
+                    <h3>Issue Certificate</h3>
+                    <p>Create and issue new certificates to students. Upload certificate documents and store them securely on IPFS.</p>
+                    <div class="card-action" onclick="window.location.href='issue.html'">
+                        <span>Issue Certificate</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Verify Certificate Card -->
+                <div class="feature-card" id="verifyCard">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Verify Certificate</h3>
+                    <p>Verify the authenticity of any certificate using its unique token ID. Instant verification on the blockchain.</p>
+                    <div class="card-action" onclick="window.location.href='verify.html'">
+                        <span>Verify Certificate</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- View Gallery Card -->
+                <div class="feature-card" id="galleryCard">
+                    <div class="card-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3>View Certificates</h3>
+                    <p>Browse all issued certificates in a beautiful gallery. Filter and search through your certificate collection.</p>
+                    <div class="card-action" onclick="window.location.href='gallery.html'">
+                        <span>View Certificates</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toast Notification Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html> 
