@@ -5,6 +5,9 @@ const contractAddress = window.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 const chains = [1, 5, 137, 10, 42161, 100, 1313161554, 56, 43114, 421613, 97, 80001, 11155111];
 const defaultChain = 11155111; // Sepolia testnet
 
+// Get base URL for GitHub Pages
+const baseUrl = window.location.pathname.includes('/NFTbasedCERT/') ? '/NFTbasedCERT/' : '/';
+
 // DOM Elements
 const connectWalletBtn = document.getElementById('connectWallet');
 const walletAddress = document.getElementById('walletAddress');
@@ -24,6 +27,10 @@ const certificateEntries = document.getElementById('certificateEntries');
 const addEntryBtn = document.getElementById('addEntry');
 const batchFile = document.getElementById('batchFile');
 const certificateTemplate = document.getElementById('certificateTemplate');
+
+// Update navigation links
+if (verifyBtn) verifyBtn.href = baseUrl + 'verify.html';
+if (galleryBtn) galleryBtn.href = baseUrl + 'gallery.html';
 
 // State
 let provider = null;
