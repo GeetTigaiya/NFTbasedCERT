@@ -157,10 +157,54 @@ const contractABI = [
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "recipients",
+                "type": "address[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "studentNames",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "degrees",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "institutions",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "graduationDates",
+                "type": "string[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "ipfsHashes",
+                "type": "string[]"
+            }
+        ],
+        "name": "issueCertificatesBatch",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ];
 
-const contractAddress = '0xF1427eA86669998fcE1175559420c57eF2B33431';
+const contractAddress = '0xf6cd74A730F598977c0993F6b352664d8De2E740';
 
 // Toast Notification Function
 function showToast(message, type = 'success') {
