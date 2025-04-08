@@ -1,7 +1,27 @@
 // Web3 Configuration
-const projectId = window.env.PINATA_API_KEY;
-const pinataSecretKey = window.env.PINATA_SECRET_KEY;
-const contractAddress = window.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+let projectId, pinataSecretKey, contractAddress;
+
+// Check if config is available
+if (typeof window.env !== 'undefined') {
+    projectId = window.env.PINATA_API_KEY;
+    pinataSecretKey = window.env.PINATA_SECRET_KEY;
+    contractAddress = window.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+} else {
+    // Show error message if config is missing
+    const toastContainer = document.getElementById('toastContainer');
+    if (toastContainer) {
+        const toast = document.createElement('div');
+        toast.className = 'toast error';
+        toast.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Configuration missing. Please check config.js file.</span>
+        `;
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+    }
+    console.error('Configuration missing. Please check config.js file.');
+}
+
 const chains = [1, 5, 137, 10, 42161, 100, 1313161554, 56, 43114, 421613, 97, 80001, 11155111];
 const defaultChain = 11155111; // Sepolia testnet
 
