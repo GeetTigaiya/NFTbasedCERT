@@ -1,6 +1,6 @@
 [build]
   base = "vanilla-frontend"
-  publish = "vanilla-frontend"
+  publish = "."
   command = ""
 
 [[redirects]]
