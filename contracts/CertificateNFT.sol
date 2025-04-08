@@ -29,6 +29,7 @@ contract CertificateNFT is ERC721, Ownable, ReentrancyGuard {
         string institution
     );
 
+    event CertificatesIssuedInBatch(uint256 batchSize);
     event CertificateRevoked(uint256 indexed tokenId);
 
     constructor() ERC721("University Certificate", "UCERT") {}
@@ -66,6 +67,57 @@ contract CertificateNFT is ERC721, Ownable, ReentrancyGuard {
         emit CertificateIssued(newTokenId, studentName, degree, institution);
 
         return newTokenId;
+    }
+
+    function issueCertificatesBatch(
+        address[] memory recipients,
+        string[] memory studentNames,
+        string[] memory degrees,
+        string[] memory institutions,
+        string[] memory graduationDates,
+        string[] memory ipfsHashes
+    ) public onlyOwner nonReentrant returns (uint256[] memory) {
+        uint256 batchSize = recipients.length;
+        require(
+            batchSize == studentNames.length &&
+            batchSize == degrees.length &&
+            batchSize == institutions.length &&
+            batchSize == graduationDates.length &&
+            batchSize == ipfsHashes.length,
+            "Array lengths must match"
+        );
+
+        uint256[] memory tokenIds = new uint256[](batchSize);
+
+        for (uint256 i = 0; i < batchSize; i++) {
+            require(!usedIpfsHashes[ipfsHashes[i]], "IPFS hash already used");
+            require(bytes(studentNames[i]).length > 0, "Student name cannot be empty");
+            require(bytes(degrees[i]).length > 0, "Degree cannot be empty");
+            require(bytes(institutions[i]).length > 0, "Institution cannot be empty");
+            require(bytes(graduationDates[i]).length == 10, "Use YYYY-MM-DD format");
+
+            _tokenIds.increment();
+            uint256 newTokenId = _tokenIds.current();
+            tokenIds[i] = newTokenId;
+
+            _mint(recipients[i], newTokenId);
+
+            certificates[newTokenId] = Certificate({
+                studentName: studentNames[i],
+                degree: degrees[i],
+                institution: institutions[i],
+                graduationDate: graduationDates[i],
+                ipfsHash: ipfsHashes[i],
+                isValid: true
+            });
+
+            usedIpfsHashes[ipfsHashes[i]] = true;
+
+            emit CertificateIssued(newTokenId, studentNames[i], degrees[i], institutions[i]);
+        }
+
+        emit CertificatesIssuedInBatch(batchSize);
+        return tokenIds;
     }
 
     function getCertificate(uint256 tokenId) public view returns (Certificate memory) {

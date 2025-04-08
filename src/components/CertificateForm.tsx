@@ -143,7 +143,7 @@ export default function CertificateForm({ address }: CertificateFormProps) {
 
       console.log('File converted to base64, uploading to IPFS...');
 
-      // Upload to IPFS via API route
+      // Upload certificate file to IPFS via API route
       const response = await fetch('/api/upload', {
         method: 'POST',
         headers: {
@@ -161,12 +161,57 @@ export default function CertificateForm({ address }: CertificateFormProps) {
       }
 
       const ipfsHash = data.ipfsHash;
-      console.log('File uploaded to IPFS, hash:', ipfsHash);
+      console.log('Certificate file uploaded to IPFS, hash:', ipfsHash);
+
+      // Create metadata JSON
+      const metadata = {
+        name: `${formData.studentName}'s Certificate`,
+        description: `Certificate of ${formData.degree} from ${formData.institution}`,
+        image: `ipfs://${ipfsHash}`,
+        attributes: [
+          {
+            trait_type: "Student Name",
+            value: formData.studentName
+          },
+          {
+            trait_type: "Degree",
+            value: formData.degree
+          },
+          {
+            trait_type: "Institution",
+            value: formData.institution
+          },
+          {
+            trait_type: "Graduation Date",
+            value: formData.graduationDate
+          }
+        ]
+      };
+
+      // Upload metadata to IPFS
+      const metadataResponse = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileData: JSON.stringify(metadata),
+          fileName: 'metadata.json'
+        }),
+      });
+
+      const metadataData = await metadataResponse.json();
+      if (!metadataResponse.ok) {
+        throw new Error(metadataData.error || 'Failed to upload metadata');
+      }
+
+      const metadataHash = metadataData.ipfsHash;
+      console.log('Metadata uploaded to IPFS, hash:', metadataHash);
 
       // Update toast message
       toast.loading('Initiating transaction...', { id: toastId });
 
-      // Issue certificate with IPFS hash
+      // Issue certificate with metadata hash
       console.log('Sending transaction to blockchain...');
       const tx = await contract.issueCertificate(
         formData.recipientAddress,
@@ -174,7 +219,7 @@ export default function CertificateForm({ address }: CertificateFormProps) {
         formData.degree,
         formData.institution,
         formData.graduationDate,
-        ipfsHash
+        metadataHash // Use metadata hash instead of certificate file hash
       );
 
       console.log('Transaction sent, hash:', tx.hash);
