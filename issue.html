@@ -17,4 +17,15 @@
                 <div class="form-group">
                     <label for="graduation-date">Graduation Date</label>
                     <input type="date" id="graduation-date" class="graduation-date" required name="graduation-date">
-                </div> 
+                </div>
+    <script>
+        // Inject environment variables
+        window.env = {
+            PINATA_API_KEY: '%PINATA_API_KEY%',
+            PINATA_SECRET_KEY: '%PINATA_SECRET_KEY%',
+            NEXT_PUBLIC_CONTRACT_ADDRESS: '%NEXT_PUBLIC_CONTRACT_ADDRESS%'
+        };
+    </script>
+    <script src="issue.js"></script>
+</body>
+</html> 

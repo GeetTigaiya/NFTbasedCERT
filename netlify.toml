@@ -3,13 +3,19 @@
   publish = "."
   command = ""
 
+[build.environment]
+  NODE_VERSION = "16"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[build.environment]
-  NODE_VERSION = "18"
+[context.production.environment]
+  PINATA_API_KEY = ""
+  PINATA_SECRET_KEY = ""
+  NEXT_PUBLIC_CONTRACT_ADDRESS = ""
+  PROJECT_ID = ""
 
 [[headers]]
   for = "/*"

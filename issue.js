@@ -1,3 +1,9 @@
+// Web3 Configuration
+const projectId = window.env.PINATA_API_KEY;
+const pinataApiKey = window.env.PINATA_API_KEY;
+const pinataSecretKey = window.env.PINATA_SECRET_KEY;
+const contractAddress = window.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
+
 function createCertificateEntry() {
     const entry = document.createElement('div');
     entry.className = 'certificate-entry';
