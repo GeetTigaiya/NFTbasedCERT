@@ -2,3 +2,7 @@ node_modules
 
 #secret 
 .env
+
+# Config files with sensitive data
+config.js
+vanilla-frontend/config.js
