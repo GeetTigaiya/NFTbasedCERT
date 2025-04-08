@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Gallery - NFT Certificate System</title>
+    <link rel="stylesheet" href="/NFTbasedCERT/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .gallery-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .gallery-filters {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: #ebf8ff;
+            border-color: #3182ce;
+            color: #3182ce;
+        }
+
+        .filter-btn.active {
+            background: #3182ce;
+            color: white;
+            border-color: #3182ce;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .certificate-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .certificate-content {
+            padding: 1.5rem;
+        }
+
+        .certificate-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .certificate-details {
+            margin-bottom: 1rem;
+        }
+
+        .certificate-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .certificate-detail-label {
+            color: #4a5568;
+        }
+
+        .certificate-detail-value {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .certificate-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .verify-btn {
+            background: #3182ce;
+            color: white;
+        }
+
+        .verify-btn:hover {
+            background: #2c5282;
+        }
+
+        .view-btn {
+            background: #ebf8ff;
+            color: #3182ce;
+        }
+
+        .view-btn:hover {
+            background: #bee3f8;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: white;
+            color: #3182ce;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ebf8ff;
+            transform: translateX(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #4a5568;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3182ce;
+        }
+
+        .no-certificates {
+            text-align: center;
+            padding: 3rem;
+            color: #4a5568;
+        }
+
+        .no-certificates i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #cbd5e0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #4a5568;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #2d3748;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .modal-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 0.5rem;
+        }
+
+        .modal-detail-label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .modal-detail-value {
+            color: #2d3748;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </button>
+
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-certificate"></i>
+                    <span>Certificate Gallery</span>
+                </div>
+                <div class="wallet-section">
+                    <button id="connectWallet" class="connect-wallet-btn">
+                        <i class="fas fa-wallet"></i>
+                        Connect Wallet
+                    </button>
+                    <div id="walletAddress" class="wallet-address hidden">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="addressText"></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="gallery-container">
+            <div class="gallery-header">
+                <h1 class="gallery-title">My Certificates</h1>
+                <div class="gallery-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="valid">Valid</button>
+                    <button class="filter-btn" data-filter="invalid">Invalid</button>
+                </div>
+            </div>
+
+            <div id="galleryGrid" class="gallery-grid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading certificates...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Certificate Modal -->
+        <div id="certificateModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Certificate Details</h2>
+                    <button class="close-modal" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <img id="modalImage" class="modal-image" src="" alt="Certificate">
+                <div class="modal-details">
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Student Name</span>
+                        <span id="modalStudentName" class="modal-detail-value"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Degree</span>
+                        <span id="modalDegree" class="modal-detail-value"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Institution</span>
+                        <span id="modalInstitution" class="modal-detail-value"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Graduation Date</span>
+                        <span id="modalGraduationDate" class="modal-detail-value"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Token ID</span>
+                        <span id="modalTokenId" class="modal-detail-value"></span>
+                    </div>
+                    <div class="modal-detail">
+                        <span class="modal-detail-label">Status</span>
+                        <span id="modalStatus" class="modal-detail-value"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="/NFTbasedCERT/gallery.js"></script>
+</body>
+</html> 
